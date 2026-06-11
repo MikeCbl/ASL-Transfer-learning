@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - '8000:8000' # dostep do /docs i bezposrednich testow API
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '80:80'
+    volumes:
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - backend
+    restart: unless-stopped

@@ -1,0 +1,16 @@
+:80 {
+    encode gzip
+
+    handle_path /api/* {
+        request_body {
+            max_size 12MB
+        }
+        reverse_proxy backend:8000
+    }
+
+    handle {
+        root * /srv
+        try_files {path} /index.html
+        file_server
+    }
+}

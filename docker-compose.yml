@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: ./backend
+    expose:
+      - '8000' # tylko wewnatrz sieci Dockera
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data # WAZNE: trwale certy TLS miedzy restartami
+      - caddy_config:/config
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
